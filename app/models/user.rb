@@ -1,9 +1,10 @@
 class User < ApplicationRecord
-  has_secure_password :password, validations: true
-
-  has_one_attached :document
-
+  # validation
   validates :fname, presence: true
   validates :lname, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  has_secure_password :password, validations: true
+
+  # related fields
+  has_one_attached :document
 end

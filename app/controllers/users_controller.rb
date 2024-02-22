@@ -1,32 +1,53 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: :show
-  before_action :authenticate_request!
+  before_action :authenticate_request!, only: [:index, :show, :update, :destroy]
 
   def index
-    render json: {users: User.all}
+    users = User.select(:fname, :lname, :email)
+    render json: {users: users}
   end
 
   def show
-    # show user document
-    document_url = rails_blob_url(@current_user.document, disposition: "attachment", only_path: true)
-    render json: { document_url: document_url }, status: :ok
+    # Load user attributes
+    user_data = @current_user.slice('fname', 'lname', 'email')
+
+    # Load document URL
+    if @current_user.document.attached?
+      user_data[:document_url] = rails_blob_url(@current_user.document, disposition: "attachment", only_path: true)
+    end
+
+    render json: { user: user_data }, status: :ok
   end
+
 
   def create
     user = User.new(user_params)
     if user.save
-      # Respond with appropriate message or token
-      render json: { status: 'User created successfully', user_id: user.id}, status: :created
+      # Optionally attach document if included in the request
+      user.document.attach(params[:document]) if params[:document].present?
+
+      render json: { status: 'User created successfully', user: user.slice('id', 'fname', 'lname', 'email') }, status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :bad_request
     end
   end
 
+
   def update
+    if @user.update(user_params)
+      render json: { status: 'User updated successfully', user: @user.slice('id', 'fname', 'lname', 'email') }, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    if @user.destroy
+      render json: { status: 'User deleted successfully' }, status: :ok
+    else
+      render json: { errors: 'Failed to delete user' }, status: :unprocessable_entity
+    end
   end
+
 
   private
     def user_params
