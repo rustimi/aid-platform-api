@@ -1,28 +1,19 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get users_index_url
-    assert_response :success
+
+  test "should create user with valid parameters" do
+    assert_difference('User.count', 1) do
+      put users_path, params: { fname: "John", lname: "Doe", email: "john@example.com", password: "password", password_confirmation: "password" }
+    end
+    assert_response :created
   end
 
-  test "should get show" do
-    get users_show_url
-    assert_response :success
+  test "should not create user with invalid parameters" do
+    assert_no_difference('User.count') do
+      put users_path, params: { fname: "", lname: "Doe", email: "john@example.com", password: "password", password_confirmation: "password" }
+    end
+    assert_response :bad_request
   end
 
-  test "should get create" do
-    get users_create_url
-    assert_response :success
-  end
-
-  test "should get update" do
-    get users_update_url
-    assert_response :success
-  end
-
-  test "should get destroy" do
-    get users_destroy_url
-    assert_response :success
-  end
 end

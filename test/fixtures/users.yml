@@ -4,10 +4,8 @@ one:
   fname: MyString
   lname: MyString
   email: MyString
-  document: 
 
 two:
   fname: MyString
   lname: MyString
   email: MyString
-  document: 
