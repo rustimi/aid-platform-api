@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :users
+  get '/users', to: "users#show"
+  put '/users', to: "users#create"
+  patch '/users', to: "users#update"
+  delete '/users', to: "users#destroy"
+
   post '/login', to: 'authentication#login'
   post '/upload', to: 'uploads#picture'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

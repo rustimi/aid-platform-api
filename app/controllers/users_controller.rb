@@ -1,10 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_request!, only: [:index, :show, :update, :destroy]
-
-  def index
-    users = User.select(:fname, :lname, :email)
-    render json: {users: users}
-  end
+  before_action :authenticate_request!, only: [:show, :update, :destroy]
 
   def show
     # Load user attributes
@@ -14,7 +9,6 @@ class UsersController < ApplicationController
     if @current_user.document.attached?
       user_data[:document_url] = rails_blob_url(@current_user.document, disposition: "attachment", only_path: true)
     end
-
     render json: { user: user_data }, status: :ok
   end
 
