@@ -5,9 +5,12 @@ class RequestsController < ApplicationController
 
   def index
     if @current_user
-      requests = Request.where.not(requester: @current_user.id)
+      requests = Request.where.not(requester_id: @current_user.id)
+                        .where.not(status: 'fulfilled')
+                        .where("(status != 'unpublished') OR (status = 'unpublished' AND publish_date < ?)", 48.hours.ago)
     else
-      requests = Request.all
+      requests = Request.where.not(status: 'fulfilled')
+                        .where("(status != 'unpublished') OR (status = 'unpublished' AND publish_date < ?)", 48.hours.ago)
     end
     render json: { requests: requests }, status: :ok
   end
