@@ -13,7 +13,7 @@ class Request < ApplicationRecord
   validates :request_type, inclusion: { in: ['One time task', 'Material need'],
                                 message: "%{value} is not a valid type" }
 
-  validates :status, inclusion: { in: ['unpublished', 'fulfilled', 'active'],
+  validates :status, inclusion: { in: ['unpublished', 'fulfilled', 'unfulfilled'],
                                 message: "%{value} is not a valid status" }
 
   private
