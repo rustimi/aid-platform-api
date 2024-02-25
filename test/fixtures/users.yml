@@ -1,11 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  fname: MyString
-  lname: MyString
-  email: MyString
+  fname: John
+  lname: Doe
+  email: fixture.john.doe@example.com
+  password_digest: password
 
 two:
-  fname: MyString
-  lname: MyString
-  email: MyString
+  fname: Jane
+  lname: Smith
+  email: fixture.jane.smith@example.com
+  password_digest: password
+
+three:
+  fname: Mike
+  lname: Johnson
+  email: fixture.mike.johnson@example.com
+  password_digest: password

@@ -3,9 +3,7 @@
 one:
   user: one
   request: one
-  status: MyString
 
 two:
   user: two
   request: two
-  status: MyString

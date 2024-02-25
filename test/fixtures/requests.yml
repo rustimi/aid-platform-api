@@ -1,19 +1,30 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# test/fixtures/requests.yml
+
 one:
-  description: MyText
-  type: 
-  status: MyString
-  latitude: 1.5
-  longitude: 1.5
-  requester_id: 1
-  fulfillment_count: 1
+  description: "Help moving a couch to a new apartment."
+  status: "unfulfilled"
+  latitude: 37.7749
+  longitude: -122.4194
+  requester: one
+  fulfillment_count: 0
+  request_type: "One time task"
 
 two:
-  description: MyText
-  type: 
-  status: MyString
-  latitude: 1.5
-  longitude: 1.5
-  requester_id: 1
-  fulfillment_count: 1
+  description: "Need winter clothes for a family."
+  status: "unfulfilled"
+  latitude: 40.7128
+  longitude: -74.0060
+  requester: two
+  fulfillment_count: 0
+  request_type: "Material need"
+
+three:
+  description: "Volunteers needed for community garden cleanup."
+  status: "unfulfilled"
+  latitude: 34.0522
+  longitude: -118.2437
+  requester: three
+  fulfillment_count: 0
+  request_type: "One time task"

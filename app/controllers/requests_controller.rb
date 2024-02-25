@@ -1,5 +1,6 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_request!, only: [:user_requests_and_volunteerings]
+  before_action :authenticate_request!, only: [:user_requests_and_volunteerings, :create, :update, :show]
+  before_action :check_authorization, only: [:update]
 
   def index
     if @current_user
@@ -21,7 +22,6 @@ class RequestsController < ApplicationController
     render json: {requests: user_requests_and_volunteerings}, status: :ok
   end
 
-
   def create
     # Initialize a new request with request parameters and assign the requester
     request = Request.new(request_params)
@@ -36,11 +36,36 @@ class RequestsController < ApplicationController
     end
   end
 
+  def update
+    @request = Request.find(params[:id])
+    if @request.update(request_params)
+      render json: @request, status: :ok
+    else
+      render json: @request.errors, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    render json: @request, status: :ok
+  end
+
+
 
   private
+  def set_request
+    @request = Request.find_by(id: params[:id])
+    unless @request
+      render json: { error: "Request not found" }, status: :not_found
+    end
+  end
   def request_params
     # Ensure you only allow the necessary parameters through
     params.require(:request).permit(:description, :request_type, :status, :latitude, :longitude)
   end
 
+  def check_authorization
+    unless @current_user == @request.requester
+      render json: { error: "Not authorized to update this request" }, status: :forbidden
+    end
+  end
 end
