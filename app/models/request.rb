@@ -9,12 +9,12 @@ class Request < ApplicationRecord
 
 
   # validation
-  validates :description, :type, :status, :latitude, :longitude, presence: true
-  validates :type, inclusion: { in: ['One time task', 'Material need'],
+  validates :description, :request_type, :status, :latitude, :longitude, presence: true
+  validates :request_type, inclusion: { in: ['One time task', 'Material need'],
                                 message: "%{value} is not a valid type" }
 
   validates :status, inclusion: { in: ['unpublished', 'fulfilled', 'active'],
-                                message: "%{value} is not a valid type" }
+                                message: "%{value} is not a valid status" }
 
   private
   def check_fulfillment_count
