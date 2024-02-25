@@ -5,6 +5,13 @@ Rails.application.routes.draw do
   patch '/users', to: "users#update"
   delete '/users', to: "users#destroy"
 
+  get '/requests', to: 'requests#index'
+  get '/users/requests', to: 'requests#user_requests_and_volunteerings'
+  get '/requests/:id', to: 'requests#show'
+  put '/requests', to: 'requests#create'
+  patch '/requests', to: 'requests#update'
+  delete '/requests/:id', to: 'requests#destroy'
+
   post '/login', to: 'authentication#login'
   post '/upload', to: 'uploads#picture'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

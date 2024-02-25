@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_request!, only: [:user_requests_and_volunteerings, :create, :update, :show]
-  before_action :check_authorization, only: [:update]
+  before_action :authenticate_request!, only: [:user_requests_and_volunteerings, :create, :update, :show, :destroy]
+  before_action :check_authorization, only: [:update, :destroy]
 
   def index
     if @current_user
@@ -49,7 +49,13 @@ class RequestsController < ApplicationController
     render json: @request, status: :ok
   end
 
-
+  def destroy
+    if @request.destroy
+      render json: { status: 'Request deleted successfully' }, status: :ok
+    else
+      render json: { errors: 'Failed to delete request' }, status: :unprocessable_entity
+    end
+  end
 
   private
   def set_request
