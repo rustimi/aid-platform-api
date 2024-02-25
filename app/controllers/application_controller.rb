@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
     header = request.headers['Authorization']
     header = header.split(' ').last if header
     if header == "admin"
-      @current_user = User.find_by(email: 'admin@admin.it')
+      @current_user = User.find_by(email: 'john.doe@example.com')
       return
     end
     begin

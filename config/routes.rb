@@ -7,9 +7,9 @@ Rails.application.routes.draw do
 
   get '/requests', to: 'requests#index'
   get '/users/requests', to: 'requests#user_requests_and_volunteerings'
-  get '/requests/:id', to: 'requests#show'
+  get '/requests/:id', to: 'requests#show', as: 'request'
   put '/requests', to: 'requests#create'
-  patch '/requests', to: 'requests#update'
+  patch '/requests/:id', to: 'requests#update'
   delete '/requests/:id', to: 'requests#destroy'
 
   post '/login', to: 'authentication#login'
