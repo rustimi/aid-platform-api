@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "4ebc9751-64b3-42f9-9374-9c7657a79d6f",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8113703"
+	},
+	"item": [
+		{
+			"name": "Show",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/users",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fname\": \"first name\",\n    \"lname\": \"last name\",\n    \"email\": \"admin1@admin.it\",\n    \"password\": \"this is password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/users",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload picture",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.Kzkqok1gONXnLEsvjeBFiTI259vil6RSRdJATHAf1vM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "document",
+							"type": "file",
+							"src": "/home/rustimi/Downloads/PXL_20230817_123442054~4.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/upload",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
