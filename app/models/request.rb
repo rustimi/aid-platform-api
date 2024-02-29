@@ -4,7 +4,7 @@ class Request < ApplicationRecord
   belongs_to :requester, class_name: 'User'
   has_many :volunteering_instances, dependent: :destroy
   has_many :volunteers, through: :volunteering_instances, source: :user
-
+  has_many :conversations, dependent: :destroy
 
   # validation
   validates :description, :request_type, :latitude, :longitude, presence: true

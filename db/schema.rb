@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_29_132338) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_29_145733) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,9 +41,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_29_132338) do
 
   create_table "conversations", force: :cascade do |t|
     t.integer "sender_id"
-    t.integer "receiver_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "request_id"
+    t.integer "receiver_id"
+    t.index ["receiver_id"], name: "index_conversations_on_receiver_id"
+    t.index ["request_id"], name: "index_conversations_on_request_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -90,6 +93,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_29_132338) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "conversations", "requests"
+  add_foreign_key "conversations", "users", column: "receiver_id"
   add_foreign_key "messages", "conversations"
   add_foreign_key "messages", "users"
   add_foreign_key "volunteering_instances", "requests"

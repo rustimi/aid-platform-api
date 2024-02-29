@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
   before_action :authenticate_request!, only: [:user_related, :create, :update, :show, :destroy, :republish, :fulfill]
-  before_action :set_request, only: [:update, :show, :destroy, :republish, :fulfill]
-  before_action :check_authorization, only: [:update, :destroy, :republish, :fulfill]
+  before_action :set_request, only: [:show, :update, :destroy, :republish, :fulfill]
+  before_action :check_authorization, only: [:show, :update, :destroy, :republish, :fulfill]
 
   def index
     # all requests a user can volunteer
@@ -17,6 +17,7 @@ class RequestsController < ApplicationController
     # Initialize a new request with request parameters and assign the requester
     @request = Request.new(request_params)
     @request.requester = @current_user
+    @request.publish_date = Time.current
     if @request.save
       # If the save succeeds, redirect or render as appropriate
       render json: @request, status: :created, location: requests_url(@request)
@@ -47,21 +48,22 @@ class RequestsController < ApplicationController
   end
 
   def user_related
-    #URL param rupublishable=1|0
+    #URL param rupublishable = [1|0]
     get_republishable = params[:republishable]
 
     # Select requests where the user is the requester
     requests_as_requester = Request.where(requester: @current_user)
 
+    if get_republishable == '1'
+      # Get all the not fulfilled, older than 24h requests
+      requests_as_requester_republishable = requests_as_requester.where(fulfilled: false).where('publish_date < ?', 24.hours.ago)
+      render json: {requests: requests_as_requester_republishable}, status: :ok
+      return
+    end
+
     # Select requests where the user is a volunteer through volunteering_instances
     requests_as_volunteer = Request.joins(:volunteering_instances).where(volunteering_instances: { user: @current_user })
-
-    user_requests_and_volunteerings = requests_as_requester + requests_as_volunteer
-
-    if get_republishable
-      # Get all the not fulfilled, older than 24h requests
-      user_requests_and_volunteerings = user_requests_and_volunteerings.where(fulfilled: false, publish_date: 24.hours.ago..)
-    end
+    user_requests_and_volunteerings = (requests_as_requester + requests_as_volunteer).uniq
     render json: {requests: user_requests_and_volunteerings}, status: :ok
   end
 
