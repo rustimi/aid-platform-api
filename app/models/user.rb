@@ -6,8 +6,8 @@ class User < ApplicationRecord
 
   # related fields
   has_one_attached :document
-  has_many :requests, foreign_key: 'requester_id'
-  # As a volunteer
+  has_many :requests, foreign_key: 'requester_id', dependent: :destroy
+    # As a volunteer
   has_many :volunteering_instances
   has_many :volunteered_requests, through: :volunteering_instances, source: :request
 end

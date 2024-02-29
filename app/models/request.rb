@@ -2,7 +2,7 @@ class Request < ApplicationRecord
 
   # related fields
   belongs_to :requester, class_name: 'User'
-  has_many :volunteering_instances
+  has_many :volunteering_instances, dependent: :destroy
   has_many :volunteers, through: :volunteering_instances, source: :user
 
 

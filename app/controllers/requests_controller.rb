@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_request!, only: [:user_related, :create, :update, :show, :destroy]
-  before_action :set_request, only: [:update, :show, :destroy]
-  before_action :check_authorization, only: [:update, :destroy]
+  before_action :authenticate_request!, only: [:user_related, :create, :update, :show, :destroy, :republish, :fulfill]
+  before_action :set_request, only: [:update, :show, :destroy, :republish, :fulfill]
+  before_action :check_authorization, only: [:update, :destroy, :republish, :fulfill]
 
   def index
     # all requests a user can volunteer

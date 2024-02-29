@@ -44,4 +44,26 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
     patch update_request_url(@request_fixture), params: { request: { description: 'Unauthorized update' } }
     assert_response :unauthorized
   end
+
+  test "should destroy request" do
+    assert_difference('Request.count', -1) do
+      delete delete_request_url(@request_fixture), headers: { Authorization: @token }
+    end
+    assert_response :ok
+  end
+
+  test "should republish request" do
+    post republish_url(@request_fixture), headers: { Authorization: @token }
+    assert_response :ok
+    @request_fixture.reload
+    assert_equal 0, @request_fixture.fulfillment_count
+    assert @request_fixture.publish_date <= Time.current
+  end
+
+  test "should fulfill request" do
+    post fulfill_request_url(@request_fixture), headers: { Authorization: @token }
+    assert_response :ok
+    @request_fixture.reload
+    assert @request_fixture.fulfilled
+  end
 end
