@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'messages/index'
+  get 'conversations/index'
 
   get '/users', to: "users#show"
   put '/users', to: "users#create"
@@ -19,6 +21,10 @@ Rails.application.routes.draw do
 
   post '/login', to: 'authentication#login'
   post '/upload', to: 'uploads#picture'
+
+  resources :conversations, only: [:index, :create] do
+    resources :messages, only: [:index, :create]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
