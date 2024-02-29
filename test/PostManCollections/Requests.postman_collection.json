@@ -56,6 +56,100 @@
 			"response": []
 		},
 		{
+			"name": "Show republishables",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/users/requests?republishable=1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"requests"
+					],
+					"query": [
+						{
+							"key": "republishable",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Republish",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/users/requests/3/republish",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"requests",
+						"3",
+						"republish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fulfill",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/users/requests/3/fulfill",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"requests",
+						"3",
+						"fulfill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Show single",
 			"request": {
 				"method": "GET",
@@ -96,7 +190,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Need help doing a thing\",\n    \"request_type\": \"One time task\",\n    \"latitude\": 12,\n    \"longitude\": 32\n}",
+					"raw": "{\n    \"description\": \"Need help doing two thing\",\n    \"request_type\": \"One time task\",\n    \"latitude\": 12,\n    \"longitude\": 32\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -104,7 +198,7 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:3000/requests/",
+					"raw": "127.0.0.1:3000/requests",
 					"host": [
 						"127",
 						"0",
@@ -113,8 +207,7 @@
 					],
 					"port": "3000",
 					"path": [
-						"requests",
-						""
+						"requests"
 					]
 				}
 			},
@@ -133,7 +226,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Do that other thing\"\n}",
+					"raw": "{\n    \"description\": \"Do that two other thing\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -178,7 +271,7 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:3000/requests/9",
+					"raw": "127.0.0.1:3000/requests/1",
 					"host": [
 						"127",
 						"0",
@@ -188,7 +281,7 @@
 					"port": "3000",
 					"path": [
 						"requests",
-						"9"
+						"1"
 					]
 				}
 			},

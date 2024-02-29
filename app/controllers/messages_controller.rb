@@ -29,7 +29,7 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(:body)
   end
-  
+
   def check_authorization
     # Must be the requester or a volunteer
     if @current_user != @request.requester and !@request.volunteers.exists?(@current_user.id)
