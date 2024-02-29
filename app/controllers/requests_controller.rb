@@ -4,14 +4,12 @@ class RequestsController < ApplicationController
   before_action :check_authorization, only: [:update, :destroy]
 
   def index
+    requests = Request.where(fulfilled: false, publish_date: ..48.hours.ago)
+
     if @current_user
-      requests = Request.where.not(requester_id: @current_user.id)
-                        .where.not(status: 'fulfilled')
-                        .where("(status != 'unpublished') OR (status = 'unpublished' AND publish_date < ?)", 48.hours.ago)
-    else
-      requests = Request.where.not(status: 'fulfilled')
-                        .where("(status != 'unpublished') OR (status = 'unpublished' AND publish_date < ?)", 48.hours.ago)
+      requests = requests.where.not(requester: @current_user)
     end
+
     render json: { requests: requests }, status: :ok
   end
 
@@ -30,10 +28,9 @@ class RequestsController < ApplicationController
     # Initialize a new request with request parameters and assign the requester
     @request = Request.new(request_params)
     @request.requester = @current_user
-
     if @request.save
       # If the save succeeds, redirect or render as appropriate
-      render json: @request, status: :created, location: @request
+      render json: @request, status: :created, location: requests_url(@request)
     else
       # If validations fail, return the errors
       render json: @request.errors, status: :unprocessable_entity
@@ -69,7 +66,7 @@ class RequestsController < ApplicationController
   end
   def request_params
     # Ensure you only allow the necessary parameters through
-    params.require(:request).permit(:description, :request_type, :status, :latitude, :longitude)
+    params.require(:request).permit(:description, :request_type, :fulfilled, :latitude, :longitude)
   end
 
   def check_authorization

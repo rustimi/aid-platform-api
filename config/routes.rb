@@ -5,12 +5,12 @@ Rails.application.routes.draw do
   patch '/users', to: "users#update"
   delete '/users', to: "users#destroy"
 
+  get '/users/requests', to: 'requests#user_requests_and_volunteerings', as: "user_requests"
   get '/requests', to: 'requests#index'
-  get '/users/requests', to: 'requests#user_requests_and_volunteerings'
-  get '/requests/:id', to: 'requests#show', as: 'request'
   put '/requests', to: 'requests#create'
-  patch '/requests/:id', to: 'requests#update'
-  delete '/requests/:id', to: 'requests#destroy'
+  get '/requests/:id', to: 'requests#show', as: 'show_request'
+  patch '/requests/:id', to: 'requests#update', as: 'update_request'
+  delete '/requests/:id', to: 'requests#destroy', as: 'delete_request'
 
   post '/login', to: 'authentication#login'
   post '/upload', to: 'uploads#picture'

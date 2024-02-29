@@ -2,9 +2,14 @@ require "test_helper"
 
 class RequestsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:one) # Assuming you have a users fixture
-    @request = requests(:one) # Assuming you have a requests fixture
-    # Log in the user here if authentication is required
+    @user = users(:one)
+
+    #Renaming @request to @request_fixture to avoid the conflict with the internal @request variable
+    @request_fixture = requests(:one)
+
+    # Log in the user
+    post login_url, params: { email: @user.email, password: 'password' }
+    @token = response.headers['Authorization']
   end
 
   test "should get index" do
@@ -13,26 +18,30 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create request" do
+    # Simulate login to get a token (this step depends on your auth setup)
+    put requests_url
     assert_difference('Request.count') do
-      post requests_url, params: { request: { description: 'Help needed', request_type: 'One time task', status: 'unfulfilled', latitude: 40.0, longitude: -74.0, requester_id: @user.id } }
+      put requests_url, params: { request: { description: 'Help needed', request_type: 'One time task', latitude: 40.0, longitude: -74.0 } },
+                        headers: { Authorization: @token }
     end
 
     assert_response :created
   end
 
   test "should show request" do
-    get request_url(@request)
+    get show_request_url(@request_fixture), headers: { Authorization: @token }
     assert_response :success
   end
 
   test "should update request" do
-    patch request_url(@request), params: { request: { description: 'Updated help needed' } }
+    patch update_request_url(@request_fixture), params: { request: { description: 'Updated help needed' } },
+                                 headers: { Authorization: @token }
     assert_response :ok
   end
 
   test "should not update request without authorization" do
     # Assuming there's logic to simulate a different user who is not the requester
-    patch request_url(@request), params: { request: { description: 'Unauthorized update' } }
-    assert_response :forbidden
+    patch update_request_url(@request_fixture), params: { request: { description: 'Unauthorized update' } }
+    assert_response :unauthorized
   end
 end
