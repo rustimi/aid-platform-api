@@ -1,10 +1,11 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_request!, only: [:user_requests_and_volunteerings, :create, :update, :show, :destroy]
+  before_action :authenticate_request!, only: [:user_related, :create, :update, :show, :destroy]
   before_action :set_request, only: [:update, :show, :destroy]
   before_action :check_authorization, only: [:update, :destroy]
 
   def index
-    requests = Request.where(fulfilled: false, publish_date: ..48.hours.ago)
+    # all requests a user can volunteer
+    requests = Request.where(fulfilled: false).where('fulfillment_count <= 5')
 
     if @current_user
       requests = requests.where.not(requester: @current_user)
@@ -12,18 +13,6 @@ class RequestsController < ApplicationController
 
     render json: { requests: requests }, status: :ok
   end
-
-  def user_requests_and_volunteerings
-    # Select requests where the user is the requester
-    requests_as_requester = Request.where(requester: @current_user)
-
-    # Select requests where the user is a volunteer through volunteering_instances
-    requests_as_volunteer = Request.joins(:volunteering_instances).where(volunteering_instances: { user: @current_user })
-
-    user_requests_and_volunteerings = requests_as_requester + requests_as_volunteer
-    render json: {requests: user_requests_and_volunteerings}, status: :ok
-  end
-
   def create
     # Initialize a new request with request parameters and assign the requester
     @request = Request.new(request_params)
@@ -54,6 +43,33 @@ class RequestsController < ApplicationController
       render json: { status: 'Request deleted successfully' }, status: :ok
     else
       render json: { errors: 'Failed to delete request' }, status: :unprocessable_entity
+    end
+  end
+
+  def user_related
+    #URL param rupublishable=1|0
+    get_republishable = params[:republishable]
+
+    # Select requests where the user is the requester
+    requests_as_requester = Request.where(requester: @current_user)
+
+    # Select requests where the user is a volunteer through volunteering_instances
+    requests_as_volunteer = Request.joins(:volunteering_instances).where(volunteering_instances: { user: @current_user })
+
+    user_requests_and_volunteerings = requests_as_requester + requests_as_volunteer
+
+    if get_republishable
+      # Get all the not fulfilled, older than 24h requests
+      user_requests_and_volunteerings = user_requests_and_volunteerings.where(fulfilled: false, publish_date: 24.hours.ago..)
+    end
+    render json: {requests: user_requests_and_volunteerings}, status: :ok
+  end
+
+  def republish
+    if @request.update({publish_date: Time.current, fulfillment_count: 0})
+      render json: @request, status: :ok
+    else
+      render json: @request.errors, status: :unprocessable_entity
     end
   end
 

@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   patch '/users', to: "users#update"
   delete '/users', to: "users#destroy"
 
-  get '/users/requests', to: 'requests#user_requests_and_volunteerings', as: "user_requests"
+  get '/users/requests', to: 'requests#user_related', as: "user_requests"
+  post 'users/requests/:id/republish', to: 'requests#republish', as: "republish"
   get '/requests', to: 'requests#index'
   put '/requests', to: 'requests#create'
   get '/requests/:id', to: 'requests#show', as: 'show_request'
