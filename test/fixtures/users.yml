@@ -1,11 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+#The unhased password is:
+  # password\
 one:
-  fname: MyString
-  lname: MyString
-  email: MyString
+  fname: John
+  lname: Doe
+  email: fixture.john.doe@example.com
+  password_digest: $2a$12$jyz99Z7LOJe31XaajXXrWeHdilQY33AItB9o0J8rIyiraMYfRAMBu
 
 two:
-  fname: MyString
-  lname: MyString
-  email: MyString
+  fname: Jane
+  lname: Smith
+  email: fixture.jane.smith@example.com
+  password_digest: $2a$12$jyz99Z7LOJe31XaajXXrWeHdilQY33AItB9o0J8rIyiraMYfRAMBu
+
+three:
+  fname: Mike
+  lname: Johnson
+  email: fixture.mike.johnson@example.com
+  password_digest: $2a$12$jyz99Z7LOJe31XaajXXrWeHdilQY33AItB9o0J8rIyiraMYfRAMBu
