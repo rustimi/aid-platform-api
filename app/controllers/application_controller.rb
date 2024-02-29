@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  private
   def authenticate_request!
     header = request.headers['Authorization']
     header = header.split(' ').last if header
@@ -11,6 +12,12 @@ class ApplicationController < ActionController::API
       @current_user = User.find(@decoded[0]['user_id'])
     rescue ActiveRecord::RecordNotFound, JWT::DecodeError
       render json: { errors: 'Unauthorized' }, status: :unauthorized
+    end
+  end
+  def set_request
+    @request = Request.find_by(id: params[:id])
+    unless @request
+      render json: { error: "Request not found" }, status: :not_found
     end
   end
 end

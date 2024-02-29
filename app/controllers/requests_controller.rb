@@ -73,21 +73,23 @@ class RequestsController < ApplicationController
     end
   end
 
-  private
-  def set_request
-    @request = Request.find_by(id: params[:id])
-    unless @request
-      render json: { error: "Request not found" }, status: :not_found
+  def fulfill
+    if @request.update({fulfilled: true})
+      render json: @request, status: :ok
+    else
+      render json: @request.errors, status: :unprocessable_entity
     end
   end
-  def request_params
-    # Ensure you only allow the necessary parameters through
-    params.require(:request).permit(:description, :request_type, :fulfilled, :latitude, :longitude)
-  end
 
+
+  private
   def check_authorization
     unless @current_user == @request.requester
       render json: { error: "Not authorized to access this request" }, status: :forbidden
     end
+  end
+  def request_params
+    # Ensure you only allow the necessary parameters through
+    params.require(:request).permit(:description, :request_type, :latitude, :longitude)
   end
 end
