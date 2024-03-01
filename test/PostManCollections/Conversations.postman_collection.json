@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "ad8eb6fe-eeea-4aa9-8e50-8382161bd1be",
+		"name": "Conversations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8113703"
+	},
+	"item": [
+		{
+			"name": "Conversations of request as requester",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/requests/15/conversations",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"requests",
+						"15",
+						"conversations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All messages",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1fQ.rGK-ad-2p6rkg4dX27IkVZ7T_GFUewPnFOyyrFgY47E",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/requests/15/conversations/3/messages",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"requests",
+						"15",
+						"conversations",
+						"3",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New message",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1fQ.rGK-ad-2p6rkg4dX27IkVZ7T_GFUewPnFOyyrFgY47E",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"body\": \"Hello There from user 2 of conversation!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:3000/requests/15/conversations/3/messages",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"requests",
+						"15",
+						"conversations",
+						"3",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conversations of request as volunteer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1fQ.rGK-ad-2p6rkg4dX27IkVZ7T_GFUewPnFOyyrFgY47E",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "127.0.0.1:3000/requests/15/conversations",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"requests",
+						"15",
+						"conversations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

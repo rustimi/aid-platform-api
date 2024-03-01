@@ -1,0 +1,9 @@
+message_one:
+  body: "Hello from user one to user two!"
+  conversation: one
+  user: one
+
+message_two:
+  body: "Hello back from user two to user one!"
+  conversation: one
+  user: two
