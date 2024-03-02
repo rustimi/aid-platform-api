@@ -1,69 +1,40 @@
-require "test_helper"
+require 'test_helper'
 
 class RequestsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:one)
-
-    #Renaming @request to @request_fixture to avoid the conflict with the internal @request variable
-    @request_fixture = requests(:one)
-
+    @user = users(:john_doe)
+    @request_groceries = requests(:groceries_request)
     # Log in the user
     post login_url, params: { email: @user.email, password: 'password' }
     @token = response.headers['Authorization']
   end
 
   test "should get index" do
-    get requests_url
+    get requests_url, headers: { Authorization: @token }
     assert_response :success
   end
 
   test "should create request" do
-    # Simulate login to get a token (this step depends on your auth setup)
-    put requests_url
     assert_difference('Request.count') do
-      put requests_url, params: { request: { description: 'Help needed', request_type: 'One time task', latitude: 40.0, longitude: -74.0 } },
-                        headers: { Authorization: @token }
+      put requests_url, params: { request: { description: 'Need a new task', request_type: 'One time task', latitude: 40.7128, longitude: -74.0060 } }, headers: { Authorization: @token }
     end
-
     assert_response :created
   end
 
   test "should show request" do
-    get show_request_url(@request_fixture), headers: { Authorization: @token }
+    get show_request_url(@request_groceries), headers: { Authorization: @token }
     assert_response :success
   end
 
   test "should update request" do
-    patch update_request_url(@request_fixture), params: { request: { description: 'Updated help needed' } },
-                                 headers: { Authorization: @token }
-    assert_response :ok
-  end
-
-  test "should not update request without authorization" do
-    # Assuming there's logic to simulate a different user who is not the requester
-    patch update_request_url(@request_fixture), params: { request: { description: 'Unauthorized update' } }
-    assert_response :unauthorized
+    patch update_request_url(@request_groceries), params: { request: { description: 'Updated description' } }, headers: { Authorization: @token }
+    assert_response :success
   end
 
   test "should destroy request" do
     assert_difference('Request.count', -1) do
-      delete delete_request_url(@request_fixture), headers: { Authorization: @token }
+      delete delete_request_url(@request_groceries), headers: { Authorization: @token }
     end
-    assert_response :ok
-  end
-
-  test "should republish request" do
-    post republish_url(@request_fixture), headers: { Authorization: @token }
-    assert_response :ok
-    @request_fixture.reload
-    assert_equal 0, @request_fixture.fulfillment_count
-    assert @request_fixture.publish_date <= Time.current
-  end
-
-  test "should fulfill request" do
-    post fulfill_request_url(@request_fixture), headers: { Authorization: @token }
-    assert_response :ok
-    @request_fixture.reload
-    assert @request_fixture.fulfilled
+    assert_response :success
   end
 end

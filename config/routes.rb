@@ -19,9 +19,9 @@ Rails.application.routes.draw do
 
   post '/requests/:id/volunteer', to: 'volunteers#volunteer', as: 'volunteer'
 
-  get '/requests/:id/conversations', to: 'conversations#index' # all conversations of a request
+  get '/requests/:id/conversations', to: 'conversations#index', as: "request_conversations" # all conversations of a request
   get '/requests/:id/conversations/:conversation_id/messages', to: 'messages#index', as: 'conversation_messages' # show all messages of a conversation
-  put '/requests/:id/conversations/:conversation_id/messages', to: 'messages#create' # add a message to a conversation
+  put '/requests/:id/conversations/:conversation_id/messages', to: 'messages#create', as: 'new_conversation_message' # add a message to a conversation
 
   post '/login', to: 'authentication#login'
   post '/upload', to: 'uploads#picture'
