@@ -27,15 +27,15 @@ class UsersController < ApplicationController
 
 
   def update
-    if @user.update(user_params)
-      render json: { status: 'User updated successfully', user: @user.slice('id', 'fname', 'lname', 'email') }, status: :ok
+    if @current_user.update(user_params)
+      render json: { status: 'User updated successfully', user: @current_user.slice('id', 'fname', 'lname', 'email') }, status: :ok
     else
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @user.destroy
+    if @current_user.destroy
       render json: { status: 'User deleted successfully' }, status: :ok
     else
       render json: { errors: 'Failed to delete user' }, status: :unprocessable_entity

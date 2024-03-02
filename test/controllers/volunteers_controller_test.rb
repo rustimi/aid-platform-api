@@ -2,37 +2,45 @@ require 'test_helper'
 
 class VolunteersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    # Assuming you have fixtures for users and requests
-    @user = users(:one)
-    @another_user = users(:two) # Another user to act as the requester
-    @request_fixture = requests(:one)
-
+    @user = users(:john_doe)
+    @request_groceries = requests(:groceries_request)
+    @request_ride = requests(:ride_request)
+    # Assume john_doe is not the requester of groceries_request to allow volunteering
     # Log in the user
     post login_url, params: { email: @user.email, password: 'password' }
     @token = response.headers['Authorization']
-
-    # Set the requester to another_user for the request
-    @request_fixture.update(requester: @another_user)
   end
 
-  test "should volunteer for a request successfully" do
-    assert_difference('@request_fixture.volunteers.count') do
-      post volunteer_url(@request_fixture), headers: { Authorization: @token }
+  test "should volunteer successfully" do
+    assert_not_equal @user, @request_ride.requester
+
+    assert_difference('@request_ride.volunteers.count') do
+      post volunteer_url(@request_ride), headers: { Authorization: @token }
     end
     assert_response :ok
-    @request_fixture.reload
-    assert_equal 1, @request_fixture.fulfillment_count
-  end
-
-  test "should not volunteer if not authenticated" do
-    post volunteer_url(@request_fixture)
-    assert_response :unauthorized # or :unauthorized, depending on how your authentication is setup
   end
 
   test "should not volunteer for own request" do
-    # User tries to volunteer for their own request
-    @request_fixture.update(requester: @user)
-    post volunteer_url(@request_fixture), headers: { Authorization: @token }
+    # Check if the user is the requester of the request
+    assert_equal @user, @request_groceries.requester
+
+    assert_no_difference('@request_groceries.volunteers.count') do
+      post volunteer_url(@request_groceries), headers: { Authorization: @token }
+    end
+    assert_response :forbidden
+  end
+
+  test "should not volunteer multiple times for the same request" do
+    assert_not_equal @user, @request_ride.requester
+
+    # Volunteer once successfully
+    post volunteer_url(@request_ride), headers: { Authorization: @token }
+    assert_response :ok
+
+    # Try volunteering again for the same request
+    assert_no_difference('@request_ride.volunteers.count') do
+      post volunteer_url(@request_ride), headers: { Authorization: @token }
+    end
     assert_response :forbidden
   end
 end

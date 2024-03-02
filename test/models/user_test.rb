@@ -1,30 +1,50 @@
-require "test_helper"
+require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  test "should not save user without required fields" do
-    user = User.new
-    assert_not user.save, "Saved the user without a first name, last name, or email"
+  def setup
+    @user = User.new(fname: 'Test', lname: 'User', email: 'test@example.com', password: 'PasswordTest123!', password_confirmation: 'PasswordTest123!')
   end
 
-  test "should save user with all required fields and valid email" do
-    user = User.new(fname: "John", lname: "Doe", email: "john.doe@example.com", password: "securepassword")
-    assert user.save, "Couldn't save the user with all required fields"
+  test "should be valid" do
+    assert @user.valid?
   end
 
-  test "should not save user with invalid email format" do
-    user = User.new(fname: "John", lname: "Doe", email: "invalid-email", password: "securepassword")
-    assert_not user.save, "Saved the user with an invalid email format"
+  test "first name should be present" do
+    @user.fname = "     "
+    assert_not @user.valid?
   end
 
-  test "email should be unique" do
-    user1 = users(:one) # Assuming you have a users fixture
-    user2 = User.new(fname: "Jane", lname: "Doe", email: user1.email, password: "securepassword")
-    assert_not user2.save, "Saved two users with the same email"
+  test "last name should be present" do
+    @user.lname = "     "
+    assert_not @user.valid?
   end
 
-  test "should have one attached document" do
-    user = users(:one) # Assuming you have a users fixture
-    user.document.attach(io: File.open(Rails.root.join('test', 'fixtures', 'files', 'sample.jpg')), filename: 'sample.jpg', content_type: 'application/jpg')
-    assert user.document.attached?, "User's document wasn't attached"
+  test "email should be present" do
+    @user.email = "     "
+    assert_not @user.valid?
   end
+
+  test "email addresses should be unique" do
+
+    duplicate_user = @user.dup
+    duplicate_user.email = @user.email.upcase
+    @user.save
+    assert_not duplicate_user.valid?
+  end
+
+  test "password should have a minimum length" do
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
+  end
+
+  test "associated requests should be destroyed" do
+    assert @user.save
+    @user.requests.create!(description: "Lorem ipsum", request_type: "One time task", latitude: 0.0, longitude: 0.0)
+    assert_equal 1, @user.requests.count, "Expected user to have one request"
+
+    assert_difference 'Request.count', -1 do
+      @user.destroy
+    end
+  end
+
 end

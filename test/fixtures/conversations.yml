@@ -1,7 +1,14 @@
-one:
-  sender: one
-  receiver: two
+conversation_one:
+  sender: jane_smith
+  receiver: john_doe
+  request: ride_request
 
-two:
-  sender: two
-  receiver: one
+conversation_two:
+  sender: mike_brown
+  receiver: john_doe
+  request: groceries_request
+
+conversation_three:
+  sender: john_doe
+  receiver: jane_smith
+  request: blanket_request

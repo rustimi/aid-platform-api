@@ -1,13 +1,17 @@
 class MessagesController < ApplicationController
   before_action :authenticate_request!
   before_action :set_request
-  before_action :check_authorization
   before_action do
     @conversation = Conversation.find(params[:conversation_id])
   end
+  before_action :check_authorization
 
 
   def index
+    unless @conversation
+      render json: { error: "Conversation not found" }, status: :not_found
+      return
+    end
     @messages = @conversation.messages
 
     # set all messages as read since we are opening the all
@@ -22,6 +26,8 @@ class MessagesController < ApplicationController
 
     if @message.save
       render json: @message, status: :created
+    else
+      render json: @message.errors, status: :unprocessable_entity
     end
   end
 
@@ -31,9 +37,12 @@ class MessagesController < ApplicationController
   end
 
   def check_authorization
-    # Must be the requester or a volunteer
     if @current_user != @request.requester and !@request.volunteers.exists?(@current_user.id)
-      render json: { error: "Not authorized see the conversations!" }, status: :forbidden
+      # Must be the requester or a volunteer
+      render json: { error: "Not authorized access this conversation!" }, status: :forbidden
+    elsif @conversation.request != @request
+      # Check if the conversation belongs to the request
+        render json: { error: "This conversation does not belong to the request!" }, status: :forbidden
     end
 
   end

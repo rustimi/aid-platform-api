@@ -1,9 +1,24 @@
 message_one:
-  body: "Hello from user one to user two!"
-  conversation: one
-  user: one
+  body: "Can help with groceries"
+  user: jane_smith
+  conversation: conversation_one
 
 message_two:
-  body: "Hello back from user two to user one!"
-  conversation: one
-  user: two
+  body: "Thank you!"
+  user: john_doe
+  conversation: conversation_one
+
+message_three:
+  body: "Can I join and help too?"
+  user: mike_brown
+  conversation: conversation_two
+
+message_four:
+  body: "Here it is"
+  user: john_doe
+  conversation: conversation_three
+
+message_five:
+  body: "Thanks!"
+  user: jane_smith
+  conversation: conversation_three

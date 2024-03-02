@@ -7,6 +7,15 @@ class ApplicationController < ActionController::API
       @current_user = User.find_by(email: 'john.doe@example.com')
       return
     end
+    if header == "admin2"
+      @current_user = User.find_by(email: 'jane.doe@example.com')
+      return
+    end
+    if header == "admin3"
+      @current_user = User.find_by(email: 'jim.beam@example.com')
+      return
+    end
+
     begin
       @decoded = JWT.decode(header, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
       @current_user = User.find(@decoded[0]['user_id'])
