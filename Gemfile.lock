@@ -91,6 +91,10 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
+    geokit (1.14.0)
+    geokit-rails (2.5.0)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -214,6 +218,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   debug
+  geokit-rails
   jwt
   pg
   puma (>= 5.0)

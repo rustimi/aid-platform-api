@@ -10,6 +10,11 @@ class RequestsController < ApplicationController
     if @current_user
       requests = requests.where.not(requester: @current_user)
     end
+    if params[:ne_latitude] && params[:ne_longitude] && params[:sw_latitude] && params[:sw_longitude]
+      requests = requests.in_bounds([[params[:sw_latitude].to_f, params[:sw_longitude].to_f],
+                                    [params[:ne_latitude].to_f, params[:ne_longitude].to_f]]
+                                    ).all
+    end
 
     render json: { requests: requests }, status: :ok
   end
