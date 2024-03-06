@@ -14,3 +14,14 @@
 #       methods: [:get, :post, :put, :patch, :delete, :options, :head]
 #   end
 # end
+# config/initializers/cors.rb
+
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins '*' # Use specific domain(s) in production for security
+    resource '*',
+             headers: :any,
+             methods: [:get, :post, :put, :patch, :delete, :options, :head],
+             expose: ['Authorization'] # Expose specific headers to clients, if needed
+  end
+end
