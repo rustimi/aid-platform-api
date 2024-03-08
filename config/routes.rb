@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post '/users/requests/:id/fulfill', to: 'requests#fulfill', as: 'fulfill_request' # set request as fulfilled
 
   get '/requests', to: 'requests#index' # show all requests. If authenticated, show all requests that the user can volunteer
+  get '/requests/count', to: 'requests#request_count'
   put '/requests', to: 'requests#create' # create a new request
   get '/requests/:id', to: 'requests#show', as: 'show_request' # show a request
   patch '/requests/:id', to: 'requests#update', as: 'update_request' # update a request

@@ -88,6 +88,10 @@ class RequestsController < ApplicationController
     end
   end
 
+  def request_count
+    requests_number = Request.where(fulfilled: false).where('fulfillment_count <= 5').count
+    render json: { requests_number: requests_number }, status: :ok
+  end
 
   private
   def check_authorization
