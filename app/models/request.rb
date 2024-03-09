@@ -10,7 +10,7 @@ class Request < ApplicationRecord
   has_many :conversations, dependent: :destroy
 
   # validation
-  validates :description, :request_type, :latitude, :longitude, presence: true
+  validates :title, :description, :request_type, :latitude, :longitude, presence: true
   validates :request_type, inclusion: { in: ['One time task', 'Material need'],
                                 message: "%{value} is not a valid type" }
 

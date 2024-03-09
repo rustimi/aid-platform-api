@@ -16,7 +16,7 @@ class RequestsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create request" do
     assert_difference('Request.count') do
-      put requests_url, params: { request: { description: 'Need a new task', request_type: 'One time task', latitude: 40.7128, longitude: -74.0060 } }, headers: { Authorization: @token }
+      put requests_url, params: { request: { title: "This is title", description: 'Need a new task', request_type: 'One time task', latitude: 40.7128, longitude: -74.0060 } }, headers: { Authorization: @token }
     end
     assert_response :created
   end

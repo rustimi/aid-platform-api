@@ -2,21 +2,24 @@
 
 # test/fixtures/requests.yml
 groceries_request:
-  description: "Need groceries"
+  title: "Need groceries"
+  description: "Need groceries descr"
   request_type: "One time task"
   latitude: 40.7128
   longitude: -74.0060
   requester: john_doe
 
 ride_request:
-  description: "Need a ride"
+  title: "Need a ride"
+  description: "Need a ride descr"
   request_type: "One time task"
   latitude: 34.0522
   longitude: -118.2437
   requester: jane_smith
 
 blanket_request:
-  description: "Need a blanket"
+  title: "Need a blanket"
+  description: "Need a blanket descr"
   request_type: "Material need"
   latitude: 34.0522
   longitude: -118.2437

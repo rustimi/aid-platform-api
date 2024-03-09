@@ -101,6 +101,6 @@ class RequestsController < ApplicationController
   end
   def request_params
     # Ensure you only allow the necessary parameters through
-    params.require(:request).permit(:description, :request_type, :latitude, :longitude)
+    params.require(:request).permit(:title, :description, :request_type, :latitude, :longitude)
   end
 end

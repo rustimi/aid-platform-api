@@ -39,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "associated requests should be destroyed" do
     assert @user.save
-    @user.requests.create!(description: "Lorem ipsum", request_type: "One time task", latitude: 0.0, longitude: 0.0)
+    @user.requests.create!(title:"Title tst", description: "Lorem ipsum", request_type: "One time task", latitude: 0.0, longitude: 0.0)
     assert_equal 1, @user.requests.count, "Expected user to have one request"
 
     assert_difference 'Request.count', -1 do

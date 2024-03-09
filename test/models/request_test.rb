@@ -4,7 +4,7 @@ class RequestTest < ActiveSupport::TestCase
   def setup
     @user = users(:john_doe) # Assuming your fixtures have a user named john_doe
     # Create a new request tied to @user
-    @request = @user.requests.build(description: "Need help with groceries", request_type: "One time task", latitude: 40.7128, longitude: -74.0060)
+    @request = @user.requests.build( title:"Example title", description: "Need help with groceries", request_type: "One time task", latitude: 40.7128, longitude: -74.0060)
   end
 
   test "should be valid" do
@@ -33,6 +33,11 @@ class RequestTest < ActiveSupport::TestCase
 
   test "longitude should be present" do
     @request.longitude = nil
+    assert_not @request.valid?
+  end
+
+  test "title should be present" do
+    @request.title = nil
     assert_not @request.valid?
   end
 
