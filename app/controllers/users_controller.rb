@@ -7,8 +7,7 @@ class UsersController < ApplicationController
 
     # Load document URL
     if @current_user.document.attached?
-      # user_data[:document_url] = rails_blob_url(@current_user.document, disposition: "attachment", only_path: true)
-      user_data[:document_url] = @current_user.document
+      user_data[:document_url] = rails_blob_url(@current_user.document, disposition: "attachment", only_path: true)
     end
     render json: { user: user_data }, status: :ok
   end
