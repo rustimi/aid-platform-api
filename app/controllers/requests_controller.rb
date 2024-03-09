@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :authenticate_request!, only: [:user_related, :create, :update, :show, :destroy, :republish, :fulfill]
+  before_action :authenticate_request!, only: [:index, :user_related, :create, :update, :show, :destroy, :republish, :fulfill]
   before_action :set_request, only: [:show, :update, :destroy, :republish, :fulfill]
   before_action :check_authorization, only: [:show, :update, :destroy, :republish, :fulfill]
 
