@@ -28,7 +28,7 @@ class RequestsController < ApplicationController
       render json: @request, status: :created, location: requests_url(@request)
     else
       # If validations fail, return the errors
-      render json: @request.errors, status: :unprocessable_entity
+      render json: @request.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -36,7 +36,7 @@ class RequestsController < ApplicationController
     if @request.update(request_params)
       render json: @request, status: :ok
     else
-      render json: @request.errors, status: :unprocessable_entity
+      render json: @request.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -76,7 +76,7 @@ class RequestsController < ApplicationController
     if @request.update({publish_date: Time.current, fulfillment_count: 0})
       render json: @request, status: :ok
     else
-      render json: @request.errors, status: :unprocessable_entity
+      render json: @request.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -84,7 +84,7 @@ class RequestsController < ApplicationController
     if @request.update({fulfilled: true})
       render json: @request, status: :ok
     else
-      render json: @request.errors, status: :unprocessable_entity
+      render json: @request.errors.full_messages, status: :unprocessable_entity
     end
   end
 
