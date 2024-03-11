@@ -57,11 +57,11 @@ class RequestsController < ApplicationController
     get_republishable = params[:republishable]
 
     # Select requests where the user is the requester
-    requests_as_requester = Request.where(requester: @current_user)
+    requests_as_requester = Request.where(requester: @current_user).order(publish_date: :desc)
 
     if get_republishable == '1'
       # Get all the not fulfilled, older than 24h requests
-      requests_as_requester_republishable = requests_as_requester.where(fulfilled: false).where('publish_date < ?', 24.hours.ago)
+      requests_as_requester_republishable = requests_as_requester.where(fulfilled: false).where('publish_date < ?', 24.hours.ago).order(publish_date: :desc)
       render json: {requests: requests_as_requester_republishable}, status: :ok
       return
     end
