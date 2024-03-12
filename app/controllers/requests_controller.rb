@@ -4,12 +4,14 @@ class RequestsController < ApplicationController
   before_action :check_authorization, only: [:show, :update, :destroy, :republish, :fulfill]
 
   def index
-    # all requests a user can volunteer
-    requests = Request.where(fulfilled: false).where('fulfillment_count <= 5')
+    volunteer_request_ids = @current_user.volunteering_instances.select(:request_id).map(&:request_id)
+    # all requests the user can volunteer
+    requests = Request.where(fulfilled: false)
+                      .where('fulfillment_count <= 5')
+                      .where.not(requester: @current_user)
+                      .where.not(id: volunteer_request_ids)
+                      .order(publish_date: :desc)
 
-    if @current_user
-      requests = requests.where.not(requester: @current_user)
-    end
     if params[:ne_latitude] && params[:ne_longitude] && params[:sw_latitude] && params[:sw_longitude]
       requests = requests.in_bounds([[params[:sw_latitude].to_f, params[:sw_longitude].to_f],
                                     [params[:ne_latitude].to_f, params[:ne_longitude].to_f]]

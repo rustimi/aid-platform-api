@@ -14,7 +14,7 @@ class VolunteersController < ApplicationController
     end
 
     if @request.save
-      render json: @request, status: :ok, location: conversation_messages_url(@request, conversation)
+      render json: {conversation_id: conversation.id}, status: :ok
     else
       render json: @request.errors.full_messages, status: :unprocessable_entity
     end
