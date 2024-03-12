@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
       render json: { error: "Conversation not found" }, status: :not_found
       return
     end
-    @messages = @conversation.messages
+    @messages = @conversation.messages.order(created_at: :asc)
 
     # set all messages as read since we are opening the all
     @messages.where("user_id != ? AND read = ?", @current_user.id, false).update_all(read: true)
