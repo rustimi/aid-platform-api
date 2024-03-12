@@ -7,7 +7,7 @@ class RequestsController < ApplicationController
     volunteer_request_ids = @current_user.volunteering_instances.select(:request_id).map(&:request_id)
     # all requests the user can volunteer
     requests = Request.where(fulfilled: false)
-                      .where('fulfillment_count <= 5')
+                      .where('fulfillment_count < 5')
                       .where.not(requester: @current_user)
                       .where.not(id: volunteer_request_ids)
                       .order(publish_date: :desc)
@@ -97,7 +97,7 @@ class RequestsController < ApplicationController
 
   private
   def check_authorization
-    unless @current_user == @request.requester
+    unless @current_user == @request.requester or @request.volunteers.exists?(@current_user.id)
       render json: { error: "Not authorized to access this request" }, status: :forbidden
     end
   end
