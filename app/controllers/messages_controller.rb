@@ -12,12 +12,21 @@ class MessagesController < ApplicationController
       render json: { error: "Conversation not found" }, status: :not_found
       return
     end
+
     @messages = @conversation.messages.order(created_at: :asc)
 
-    # set all messages as read since we are opening the all
+    # set all messages as read since we are opening them all
     @messages.where("user_id != ? AND read = ?", @current_user.id, false).update_all(read: true)
-    render json: { messages: @messages }, status: :ok
+
+    messages_with_is_sent = @messages.map do |message|
+      message.attributes.except('user_id').merge({
+                                                   'isSent' => message.user_id == @current_user.id,
+                                                   'message_time' => message.message_time
+                                                 })
+    end
+    render json: { messages: messages_with_is_sent }, status: :ok
   end
+
 
   def create
     @message = @conversation.messages.new(message_params)
