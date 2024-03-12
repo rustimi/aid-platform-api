@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
                                                    'message_time' => message.message_time
                                                  })
     end
-    render json: { messages: messages_with_is_sent }, status: :ok
+    render json: { messages: messages_with_is_sent, request_name:  @request.title }, status: :ok
   end
 
 
