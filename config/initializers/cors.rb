@@ -14,14 +14,15 @@
 #       methods: [:get, :post, :put, :patch, :delete, :options, :head]
 #   end
 # end
-# config/initializers/cors.rb
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*' # Use specific domain(s) in production for security
+    origins ENV['CORS_ORIGINS'] || 'http://localhost:4000'
+
     resource '*',
              headers: :any,
-             methods: [:get, :post, :put, :patch, :delete, :options, :head],
-             expose: ['Authorization'] # Expose specific headers to clients, if needed
+             methods: [:get, :post, :patch, :put, :delete, :options, :head],
+             credentials: true  # Allow cookies and other credentials to be sent with the request
   end
 end
+

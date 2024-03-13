@@ -1,19 +1,26 @@
+include ActionController::Cookies
 class AuthenticationController < ApplicationController
 
   def login
-    if request.headers['Authorization']
-      render json: { success: "Already auth!" }, status: :ok
-    else
-
+    if params[:email].present? && params[:password].present?
       user = User.find_by_email(params[:email])
 
       if user&.authenticate(params[:password])
         token = encode_user_data({ user_id: user.id })
-        response.set_header('Authorization', "Bearer #{token}")
+        cookies.signed[:jwt] = {
+          value: token,
+          httponly: true,
+          expires: 48.hours.from_now,
+          secure: Rails.env.production?, # Only send cookie over HTTPS in production
+          same_site: :strict
+        }
+
         render json: { success: "Authenticated!" }, status: :ok
       else
         render json: { error: 'Invalid email or password' }, status: :unauthorized
       end
+    else
+      render json: { error: 'Missing email or password' }, status: :unauthorized
     end
   end
 
