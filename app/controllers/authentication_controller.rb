@@ -12,7 +12,7 @@ class AuthenticationController < ApplicationController
           httponly: true,
           expires: 48.hours.from_now,
           secure: Rails.env.production?, # Only send cookie over HTTPS in production
-          same_site: :strict
+          same_site: Rails.env.production? ? :none : :strict
         }
 
         render json: { success: "Authenticated!" }, status: :ok
