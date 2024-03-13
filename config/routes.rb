@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get '/requests/:id/conversations/:conversation_id/messages', to: 'messages#index', as: 'conversation_messages' # show all messages of a conversation
   put '/requests/:id/conversations/:conversation_id/messages', to: 'messages#create', as: 'new_conversation_message' # add a message to a conversation
 
+  get  '/session', to: 'authentication#check_session_status' # show user session
   post '/login', to: 'authentication#login' # login
   post '/upload', to: 'uploads#picture' # upload picture for user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

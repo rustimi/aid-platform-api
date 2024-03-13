@@ -24,6 +24,14 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def check_session_status
+    if is_authenticated?
+      render json: { authenticated: true }, status: :ok
+    else
+      render json: { authenticated: false }, status: :unauthorized
+    end
+
+  end
   private
 
   def encode_user_data(payload)
