@@ -25,7 +25,7 @@ class AuthenticationController < ApplicationController
   end
 
   def logout
-    cookies.delete(:jwt)
+    cookies.delete(:jwt, secure: Rails.env.production?, same_site: Rails.env.production? ? :none : :strict)
     render json: { success: "Logged out!" }, status: :ok
   end
   def check_session_status
