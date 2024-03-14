@@ -32,7 +32,7 @@ class AuthenticationController < ApplicationController
     if is_authenticated?
       render json: { authenticated: true }, status: :ok
     else
-      render json: { authenticated: false }, status: :unauthorized
+      render json: { authenticated: false }, status: :ok
     end
 
   end
