@@ -24,6 +24,10 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def logout
+    cookies.delete(:jwt)
+    render json: { success: "Logged out!" }, status: :ok
+  end
   def check_session_status
     if is_authenticated?
       render json: { authenticated: true }, status: :ok
