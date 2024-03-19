@@ -7,11 +7,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     @conversation = conversations(:conversation_two)
     # Log in the user
     post login_url, params: { email: @user.email, password: 'password' }
-    @token = response.headers['Authorization']
   end
 
   test "should get index" do
-    get conversation_messages_url(@groceries_request, @conversation), headers: { Authorization: @token }
+    get conversation_messages_url(@groceries_request, @conversation)
     assert_response :success
     messages = JSON.parse(response.body)
     assert_not_empty messages
@@ -20,8 +19,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "should create message" do
     assert_difference('@conversation.messages.count') do
       put new_conversation_message_url(@groceries_request, @conversation),
-           params: { message: { body: 'A new message' } },
-           headers: { Authorization: @token }
+           params: { message: { body: 'A new message' } }
     end
     assert_response :created
     assert_equal 'A new message', JSON.parse(response.body)['body']
@@ -30,8 +28,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "should not create message with empty body" do
     assert_no_difference('@conversation.messages.count') do
       put new_conversation_message_url(@groceries_request, @conversation),
-           params: { message: { body: '' } },
-           headers: { Authorization: @token }
+           params: { message: { body: '' } }
     end
     assert_response :unprocessable_entity
   end
@@ -40,7 +37,6 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     # Log in a different user who is not authorized
     unauthorized_user = users(:frank_west)
     post login_url, params: { email: unauthorized_user.email, password: 'password' }
-    token = response.headers['Authorization']
 
     # Ensure the unauthorized user is not the sender or receiver of the conversation
     assert_not_equal @conversation.sender,  unauthorized_user
@@ -50,8 +46,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference('@conversation.messages.count') do
       put new_conversation_message_url(@conversation.request, @conversation),
-           params: { message: { body: 'A new message' } },
-           headers: { Authorization: token }
+           params: { message: { body: 'A new message' } }
     end
     assert_response :forbidden
   end

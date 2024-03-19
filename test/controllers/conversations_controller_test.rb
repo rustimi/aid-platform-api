@@ -7,11 +7,10 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     @conversation = conversations(:conversation_one)
     # Log in the user
     post login_url, params: { email: @user.email, password: 'password' }
-    @token = response.headers['Authorization']
   end
 
   test "should get all conversations of a request" do
-    get request_conversations_url(@request_groceries), headers: { Authorization: @token }
+    get request_conversations_url(@request_groceries)
     assert_response :success
   end
 end

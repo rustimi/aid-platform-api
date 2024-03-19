@@ -8,14 +8,13 @@ class VolunteersControllerTest < ActionDispatch::IntegrationTest
     # Assume john_doe is not the requester of groceries_request to allow volunteering
     # Log in the user
     post login_url, params: { email: @user.email, password: 'password' }
-    @token = response.headers['Authorization']
   end
 
   test "should volunteer successfully" do
     assert_not_equal @user, @request_ride.requester
 
     assert_difference('@request_ride.volunteers.count') do
-      post volunteer_url(@request_ride), headers: { Authorization: @token }
+      post volunteer_url(@request_ride)
     end
     assert_response :ok
   end
@@ -25,7 +24,7 @@ class VolunteersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @user, @request_groceries.requester
 
     assert_no_difference('@request_groceries.volunteers.count') do
-      post volunteer_url(@request_groceries), headers: { Authorization: @token }
+      post volunteer_url(@request_groceries)
     end
     assert_response :forbidden
   end
@@ -34,12 +33,12 @@ class VolunteersControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal @user, @request_ride.requester
 
     # Volunteer once successfully
-    post volunteer_url(@request_ride), headers: { Authorization: @token }
+    post volunteer_url(@request_ride)
     assert_response :ok
 
     # Try volunteering again for the same request
     assert_no_difference('@request_ride.volunteers.count') do
-      post volunteer_url(@request_ride), headers: { Authorization: @token }
+      post volunteer_url(@request_ride)
     end
     assert_response :forbidden
   end

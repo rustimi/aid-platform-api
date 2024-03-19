@@ -67,10 +67,9 @@ class RequestsController < ApplicationController
       render json: {requests: requests_as_requester_republishable}, status: :ok
       return
     end
-
     # Select requests where the user is a volunteer through volunteering_instances
     requests_as_volunteer = Request.joins(:volunteering_instances).where(volunteering_instances: { user: @current_user }).where(fulfilled: false)
-    user_requests_and_volunteerings = (requests_as_requester.where('publish_date > ?', 24.hours.ago) + requests_as_volunteer).uniq
+    user_requests_and_volunteerings = (requests_as_requester.where('publish_date > ?', 24.hours.ago).or(requests_as_requester.where(fulfilled: true)) + requests_as_volunteer).uniq
     render json: {requests: user_requests_and_volunteerings}, status: :ok
   end
 
